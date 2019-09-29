@@ -30,7 +30,7 @@ except:
 	print("Error during authentication")
 	sys.exit()
 
-
+api.update("Up and Running!")
 #GLOBAL
 eastern = timezone('US/Eastern')
 with open('shows.json') as json_file:
