@@ -1,6 +1,5 @@
 #!usr/bin/env python3
 
-#from auth import consumer_key, consumer_secret, access_token, access_secret
 import tweepy
 from datetime import datetime
 import sys
@@ -9,11 +8,13 @@ from pytz import timezone
 import time
 from os import environ
 
-consumer_key = environ['consumer_key']
-consumer_secret = environ['consumer_secret']
-access_token = environ['access_token']
-access_secret = environ['access_secret']
-
+if 'consumer_key' in environ:
+	consumer_key = environ['consumer_key']
+	consumer_secret = environ['consumer_secret']
+	access_token = environ['access_token']
+	access_secret = environ['access_secret']
+else:
+	from auth import consumer_key, consumer_secret, access_token, access_secret
 
 # Authenticate to Twitter
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -30,7 +31,7 @@ except:
 	print("Error during authentication")
 	sys.exit()
 
-api.update("Up and Running!")
+api.update_status("Up and Running!")
 #GLOBAL
 eastern = timezone('US/Eastern')
 with open('shows.json') as json_file:
@@ -74,13 +75,14 @@ def main_procedure(curr_dt):
 			api.update_status(tweet_str) 
 			time.sleep(1) # Let's wait a sec for the API
 
-#Keep running, call main_procedure to tweet at XX:45
-while True:
-	currentDT = get_datetime_now_ET()
-	
-	main_procedure(currentDT)
-	while int(currentDT.strftime("%M")) != 45:
-		pass
-	main_procedure(currentDT)
-	time.sleep(15*60)
+def to_be_called():
+	#Keep running, call main_procedure to tweet at XX:45
+	while True:
+		currentDT = get_datetime_now_ET()
+		
+		main_procedure(currentDT)
+		while int(currentDT.strftime("%M")) != 45:
+			pass
+		main_procedure(currentDT)
+		time.sleep(15*60)
 
