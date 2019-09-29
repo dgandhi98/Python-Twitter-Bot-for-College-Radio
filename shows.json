@@ -1,9 +1,74 @@
 {
-	"Sat-22":[
+	"Mon-18":[
 		{
 			"show_name" : "Divy's Bizarre Adventure",
 			"hosts": "Divy",
 			"show_type" : "The Sting"
 		}
+		],
+	"Mon-19":[
+		{
+			"show_name" : "The Chronicles",
+			"hosts": "Joel, Laurette, & Erin",
+			"show_type" : "The Sting"
+		}
+		],
+	"Mon-20":[
+		{
+			"show_name" : "The Sit",
+			"hosts": "Blaine",
+			"show_type" : "The Sting"
+		}
+		],
+	"Tue-18":[
+		{
+			"show_name" : "Completely Committed",
+			"hosts": "Fabian",
+			"show_type" : "The Sting"
+		}
+		],
+	"Wed-18":[
+		{
+			"show_name" : "Gingerline",
+			"hosts": "Tommy",
+			"show_type" : "The Sting"
+		}
+		],
+	"Thu-17":[
+		{
+			"show_name" : "The Sit",
+			"hosts": "Blaine",
+			"show_type" : "The Sting"
+		}
+		],
+	"Thu-20":[
+		{
+			"show_name" : "Gingerline",
+			"hosts": "Tommy",
+			"show_type" : "The Sting"
+		}
+		],
+	"Fri-14":[
+		{
+			"show_name" : "The Pyramid",
+			"hosts": "Setta & Caroline",
+			"show_type" : "The Sting"
+		}
+		],
+	"Sat-12":[
+		{
+			"show_name" : "Soupe du Jour",
+			"hosts": "Nick",
+			"show_type" : "The Sting"
+		}
+		],
+	"Sat-16":[
+		{
+			"show_name" : "The Soul Monologue",
+			"hosts": "Jermaine",
+			"show_type" : "The Sting"
+		}
 		]
+
+
 }

@@ -1,12 +1,19 @@
 #!usr/bin/env python3
 
-from auth import consumer_key, consumer_secret, access_token, access_secret
+#from auth import consumer_key, consumer_secret, access_token, access_secret
 import tweepy
 from datetime import datetime
 import sys
 import json
 from pytz import timezone
 import time
+from os import environ
+
+consumer_key = environ['consumer_key']
+consumer_secret = environ['consumer_secret']
+access_token = environ['access_token']
+access_secret = environ['access_secret']
+
 
 # Authenticate to Twitter
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
