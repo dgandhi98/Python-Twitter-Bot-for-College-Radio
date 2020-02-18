@@ -6,15 +6,8 @@ import sys
 import json
 from pytz import timezone
 import time
-from os import environ
-
-if 'consumer_key' in environ:
-    consumer_key = environ['consumer_key']
-    consumer_secret = environ['consumer_secret']
-    access_token = environ['access_token']
-    access_secret = environ['access_secret']
-else:
-    from auth import consumer_key, consumer_secret, access_token, access_secret
+import scraper
+from authent import consumer_key, consumer_secret, access_token, access_secret
 
 # Authenticate to Twitter
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -34,54 +27,56 @@ except:
 #api.update_status("Up and Running!")
 #GLOBAL
 eastern = timezone('US/Eastern')
-with open('shows.json') as json_file:
-    shows_data = json.load(json_file)
 the_sting_link = "http://thesting.wrur.org/"
-#FM_link = "https://www.wrur.org/"
-
 
 #Gets the datetime in ET
 def get_datetime_now_ET():
     return datetime.now(eastern)
 
 #Formats hour for tweeting
-def format_hour(hr_str):
+def str_format_hour(hr_str):
     x = int(hr_str)%12
     if x == 0:
         return str(12)
     else: return str(x)
 
 #the (vegan) meat
-def main_procedure(curr_dt):
+def main_procedure(curr_dt, shows_data):
+    # Find out the time in 15 minutes, make sure to keep in Eastern Timezone!
     in_15_mins = datetime.fromtimestamp(curr_dt.timestamp() + (15*60))
-    shows_key = in_15_mins.strftime("%a-%H")
-	
+    shows_key = in_15_mins.astimezone(eastern).strftime("%a-%H")
+
+    print("before adding: ", curr_dt.strftime("%a-%H"))
+    print("shows key: ", shows_key)
+    print("shows data: ", shows_data)
+    
+    # Have we got a show in 15 minutes?
     if shows_key in shows_data:
         tshow = shows_data[shows_key]
         tweet_str = "Catch " + tshow["show_name"] \
             + " with " + tshow["hosts"] + " on " + tshow["show_type"] \
-                + " at " + format_hour(in_15_mins.strftime("%H"))  + "!"	
+                + " at " + str_format_hour(in_15_mins.strftime("%H"))  + "!"	
                 
         if tshow["show_type"] == "The Sting":
             tweet_str = tweet_str + "\n" + the_sting_link
-#           elif tshow["show_type"]=="FM":
-#           tweet_str = tweet_str + "\n" + FM_link
                 
         if len(tweet_str) > 250:
             print(tshow["show_name"], " is too long.")
             tweet_str = "Catch a show on " +tshow["show_type"] +" in 15 minutes!"
         
         api.update_status(tweet_str) 
+        print("Sent Tweet: ", tweet_str)
         time.sleep(1) # Let's wait a sec for the API
 
-def to_be_called():
-    #Keep running, call main_procedure to tweet at XX:45
-    while True:
-        currentDT = get_datetime_now_ET()
-        
-        main_procedure(currentDT)
-        while int(currentDT.strftime("%M")) < 45:
-            pass
-        main_procedure(currentDT)
-        time.sleep(15*60)
+def lambda_handler(_event_json, _context):
+    currentDT = get_datetime_now_ET()
+    shows_data = scraper.scrape()
+    main_procedure(currentDT, shows_data)
+'''
+def main():
+    lambda_handler('','')
+
+if __name__=="__main__":
+    main()
+'''
 

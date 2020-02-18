@@ -2,6 +2,7 @@ import requests as requests
 from bs4 import BeautifulSoup
 URL = 'http://thesting.wrur.org/schedule/'
 
+# Returns soup object for the sting website
 def set_up_scraper():
     page = requests.get(URL)
     soup = BeautifulSoup(page.content, 'html.parser') 
@@ -55,6 +56,8 @@ def create_obj(schedule):
             x[format_key(curr_day, time)] = show_obj
     return x
 
-soup_obj = set_up_scraper()
-schedule = soup_obj.find_all(class_='tabs-content')[0].find_all(class_='content')
-print(create_obj(schedule))
+# Main method for scraper, returns the appropriate dict object
+def scrape():
+    soup_obj = set_up_scraper()
+    schedule = soup_obj.find_all(class_='tabs-content')[0].find_all(class_='content')
+    return create_obj(schedule)
